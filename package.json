@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
     "@usedapp/core": "^1.2.16",
     "ethers": "^5.7.2",
     "react": "^18.3.1",
