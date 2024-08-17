@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useEthers } from "@usedapp/core";
-import { Contract, utils } from "ethers";
+import { Contract, utils, ethers } from "ethers";
 import healthItemPurchase from "../artifacts/contracts/HealthItemPurchase.sol/HealthItemPurchase.json";
 
 function ViewItems() {
@@ -8,22 +8,24 @@ function ViewItems() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const contractAddress = "0xf100B0Fe6d66B41994fFa699EA1A54901529c177"; // Replace with your contract address
+  const contractAddress = "0x12D7a9f11070ecAd0a39238887AF880703eB0919"; // Replace with your contract address
 
   useEffect(() => {
     const fetchItems = async () => {
-      if (library) {
-        const signer = library.getSigner(account);
-        const contract = new Contract(
-          contractAddress,
-          healthItemPurchase.abi,
-          signer
-        );
+      if (account && library) {
         try {
+          const provider =
+            library || new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner(account);
+          const contract = new Contract(
+            contractAddress,
+            healthItemPurchase.abi,
+            signer
+          );
           const fetchedItems = await contract.getAllItems();
           setItems(fetchedItems);
         } catch (error) {
-          console.error("Error fetching items:", error);
+          console.error("Error fetching owned items:", error);
         } finally {
           setIsLoading(false);
         }
@@ -71,7 +73,7 @@ function ViewItems() {
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Price (ETH)</th>
-              <th className="px-4 py-2">Legit</th>
+              <th className="px-4 py-2">Code</th>
               <th className="px-4 py-2">Image</th>
               <th className="px-4 py-2">Description</th>
               <th className="px-4 py-2">Token URI</th>
@@ -80,25 +82,23 @@ function ViewItems() {
           <tbody>
             {items.map((item, index) => (
               <tr key={index} className="border-b">
-                <td className="px-4 py-2 text-center">{item.id.toString()}</td>
-                <td className="px-4 py-2 text-center">{item.name}</td>
+                <td className="px-4 py-2 text-center">{item[0].toString()}</td>
+                <td className="px-4 py-2 text-center">{item[1]}</td>
                 <td className="px-4 py-2 text-center">
-                  {parseFloat(utils.formatEther(item.price)).toFixed(4)}
+                  {parseFloat(utils.formatEther(item[2])).toFixed(4)}
                 </td>
-                <td className="px-4 py-2 text-center">
-                  {item.isLegit ? "Yes" : "No"}
-                </td>
+                <td className="px-4 py-2 text-center">{item[3]}</td>
                 <td className="px-4 py-2 text-center">
                   <img
-                    src={getIpfsUrl(item.imageUri)}
-                    alt={item.name}
+                    src={getIpfsUrl(item[4])}
+                    alt={item[1]}
                     className="h-12 w-12 object-cover rounded-full"
                   />
                 </td>
-                <td className="px-4 py-2 text-center">{item.description}</td>
+                <td className="px-4 py-2 text-center">{item[5]}</td>
                 <td className="px-4 py-2 text-center">
                   <a
-                    href={getIpfsUrl(item.tokenUri)}
+                    href={getIpfsUrl(item[6])}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 underline"

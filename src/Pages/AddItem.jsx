@@ -11,14 +11,14 @@ function AddItem() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [isLegit, setIsLegit] = useState(false);
+  const [atcCode, setAtcCode] = useState(""); // Updated to atcCode
   const [imageUri, setImageUri] = useState("");
   const [description, setDescription] = useState("");
   const [tokenUri, setTokenUri] = useState("");
 
   const healthItemPurchaseAbi = healthItemPurchase.abi;
   const healthItemPurchaseAddress =
-    "0xf100B0Fe6d66B41994fFa699EA1A54901529c177"; // Replace with your deployed contract address
+    "0x12D7a9f11070ecAd0a39238887AF880703eB0919"; // Replace with your deployed contract address
 
   const handleAddItem = async (event) => {
     event.preventDefault();
@@ -35,7 +35,7 @@ function AddItem() {
         const tx = await healthItemPurchaseContract.addItem(
           name,
           utils.parseUnits(price, "ether"),
-          isLegit,
+          atcCode, // Updated to atcCode
           imageUri,
           description,
           tokenUri
@@ -83,6 +83,18 @@ function AddItem() {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
+            ATC Code
+          </label>
+          <input
+            type="text"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="ATC Code"
+            value={atcCode} // Updated to atcCode
+            onChange={(e) => setAtcCode(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
             Image URI
           </label>
           <input
@@ -115,18 +127,6 @@ function AddItem() {
             value={tokenUri}
             onChange={(e) => setTokenUri(e.target.value)}
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Is Legit
-          </label>
-          <input
-            type="checkbox"
-            className="mr-2 leading-tight"
-            checked={isLegit}
-            onChange={(e) => setIsLegit(e.target.checked)}
-          />
-          <span className="text-sm">Is Legit</span>
         </div>
         {error && (
           <div className="mb-4 text-red-500">

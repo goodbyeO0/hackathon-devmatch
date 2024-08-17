@@ -2,13 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { DAppProvider, Sepolia } from "@usedapp/core";
+import { DAppProvider } from "@usedapp/core";
 import { getDefaultProvider } from "ethers";
 
+const SEPOLIA_SCROLL_CHAIN_ID = 534351;
+
 const config = {
-  readOnlyChainId: Sepolia.chainId,
+  readOnlyChainId: SEPOLIA_SCROLL_CHAIN_ID,
   readOnlyUrls: {
-    [Sepolia.chainId]: getDefaultProvider("sepolia"),
+    [SEPOLIA_SCROLL_CHAIN_ID]: getDefaultProvider("sepolia"),
   },
 };
 
