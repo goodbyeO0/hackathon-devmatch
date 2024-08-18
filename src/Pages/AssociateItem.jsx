@@ -14,7 +14,7 @@ function RealTimeProductScanner() {
   const fetchScannedProducts = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/prodId");
+      const response = await fetch("http://localhost:3001/getNFT");
       const data = await response.json();
       console.log("Fetched product data:", data);
 
@@ -44,7 +44,7 @@ function RealTimeProductScanner() {
 
   const fetchPublicKey = async () => {
     try {
-      const response = await fetch("http://localhost:3000/publicKey");
+      const response = await fetch("http://localhost:3001/getWalletAddress");
       const data = await response.json();
       console.log("Fetched public key:", data);
       setPublicKey(data.publicKey);

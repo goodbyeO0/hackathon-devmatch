@@ -14,9 +14,12 @@ function ViewItems() {
     const fetchItems = async () => {
       if (account && library) {
         try {
+          console.log("Account:", account);
+          console.log("Library:", library);
+
           const provider =
             library || new ethers.providers.Web3Provider(window.ethereum);
-          const signer = provider.getSigner(account);
+          const signer = library.getSigner(account);
           const contract = new Contract(
             contractAddress,
             healthItemPurchase.abi,
